@@ -1,0 +1,26 @@
+0 HEAD
+1 SOUR PILOTO
+1 GEDC
+2 VERS 5.5.1
+1 CHAR UTF-8
+0 @P000001@ INDI
+1 NAME Iker /Falso Cross Uno/
+1 SEX M
+1 RESN privacy
+1 BIRT
+2 DATE 1 JAN 2005
+2 PLAC Villa Gemela, Provincia Falsa, Pais Falso
+0 @P000002@ INDI
+1 NAME Jana /Falso Cross Dos/
+1 SEX F
+1 RESN privacy
+1 BIRT
+2 DATE 1 JAN 2005
+2 PLAC Villa Gemela, Provincia Falsa, Pais Falso
+0 @P000003@ INDI
+1 NAME Koldo /Falso Cross Tres/
+1 SEX M
+1 BIRT
+2 DATE 1 JAN 2005
+2 PLAC Villa Gemela, Provincia Falsa, Pais Falso
+0 TRLR
