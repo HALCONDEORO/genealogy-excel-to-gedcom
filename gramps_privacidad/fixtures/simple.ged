@@ -1,0 +1,80 @@
+0 HEAD
+1 SOUR PILOTO
+1 GEDC
+2 VERS 5.5.1
+1 CHAR UTF-8
+0 @P000001@ INDI
+1 NAME Ana /Falsa Uno/
+1 SEX F
+1 BIRT
+2 DATE 2 JAN 1800
+2 PLAC Villa Falsa, Provincia Falsa, Pais Falso
+1 DEAT
+2 DATE 4 MAR 1850
+1 FAMC @F1@
+1 SOUR @S900001@
+2 PAGE f. 1 | C900010 | Nacimiento: 1800
+2 QUAY 2
+2 NOTE Confianza Excel: Alta; Corroborada: Si; Evaluacion: y; Doc: n/d; URL: n/d; Extracto: x
+0 @P000002@ INDI
+1 NAME Beto /Falso Dos/
+1 SEX M
+1 BIRT
+2 DATE 2 JAN 1800
+2 PLAC Villa Falsa, Provincia Falsa, Pais Falso
+1 DEAT
+2 DATE 4 MAR 1850
+1 FAMS @F1@
+1 SOUR @S900001@
+2 PAGE f. 1 | C900011 | Nacimiento: 1800
+2 QUAY 2
+2 NOTE Confianza Excel: Alta; Corroborada: Si; Evaluacion: y; Doc: n/d; URL: n/d; Extracto: x
+0 @P000003@ INDI
+1 NAME Cira /Falsa Tres/
+1 SEX F
+1 BIRT
+2 DATE 2 JAN 1800
+2 PLAC Villa Falsa, Provincia Falsa, Pais Falso
+1 DEAT
+2 DATE 4 MAR 1850
+1 FAMS @F1@
+1 SOUR @S900001@
+2 PAGE f. 1 | C900012 | Nacimiento: 1800
+2 QUAY 2
+2 NOTE Confianza Excel: Alta; Corroborada: Si; Evaluacion: y; Doc: n/d; URL: n/d; Extracto: x
+0 @P000004@ INDI
+1 NAME Dani /Falso Cuatro/
+1 SEX M
+1 BIRT
+2 DATE 2 JAN 1800
+2 PLAC Villa Falsa, Provincia Falsa, Pais Falso
+1 DEAT
+2 DATE 4 MAR 1850
+1 FAMC @F1@
+1 SOUR @S900001@
+2 PAGE f. 1 | C900013 | Nacimiento: 1800
+2 QUAY 2
+2 NOTE Confianza Excel: Alta; Corroborada: Si; Evaluacion: y; Doc: n/d; URL: n/d; Extracto: x
+0 @F1@ FAM
+1 NOTE Union conyugal NO acreditada en 02_Relaciones (sin fila Conyuge/Pareja): esta familia solo agrupa a los padres documentados de sus hijos; NO modelar como matrimonio. Datos de matrimonio de la hoja 30: ninguno
+1 NOTE EVIDENCIA RELACION R000001 | hijo P000001 | Padre biológico | progenitor P000002 | doc D900001 (acta) | alcance de la validacion: Solo DIRECCION hijo->progenitor (no identidad ni ortografia) | literal leido: «acta n.1: «Fulano Falso hijo de
+2 CONC  Beto Falso y de Cira Falsa»» | salvedades: ninguna declarada en el sidecar | citas candidatas de 02 (NO cotejadas con el literal, no son prueba de esta relacion): C900010; C900011 | Nota de FAMILIA: se atribuye solo a la relacion R000001; 
+2 CONC lectura incierta no es identidad confirmada.
+1 NOTE EVIDENCIA RELACION R000002 | hijo P000001 | Madre biológica | progenitor P000003 | doc D900001 (acta) | alcance de la validacion: Solo DIRECCION hijo->progenitor (no identidad ni ortografia) | literal leido: «acta n.1: «Fulano Falso hijo de
+2 CONC  Beto Falso y de Cira Falsa»» | salvedades: ninguna declarada en el sidecar | citas candidatas de 02 (NO cotejadas con el literal, no son prueba de esta relacion): C900010; C900011 | Nota de FAMILIA: se atribuye solo a la relacion R000002; 
+2 CONC lectura incierta no es identidad confirmada.
+1 NOTE EVIDENCIA RELACION R000003 | hijo P000004 | Padre biológico | progenitor P000002 | doc D900001 (acta) | alcance de la validacion: Solo DIRECCION hijo->progenitor (no identidad ni ortografia) | literal leido: «acta n.2: «Dani Falso hijo de B
+2 CONC eto Falso»» | salvedades: ninguna declarada en el sidecar | citas candidatas de 02 (NO cotejadas con el literal, no son prueba de esta relacion): C900010; C900011 | Nota de FAMILIA: se atribuye solo a la relacion R000003; lectura incierta n
+2 CONC o es identidad confirmada.
+1 NOTE EVIDENCIA RELACION R000004 | hijo P000004 | Madre biológica | progenitor P000003 | doc D900001 (acta) | alcance de la validacion: Solo DIRECCION hijo->progenitor (no identidad ni ortografia) | literal leido: «acta n.2: «y de Cira Falsa(?)»»
+2 CONC  | salvedades: Lectura incierta (?) en el literal; no endurecer | citas candidatas de 02 (NO cotejadas con el literal, no son prueba de esta relacion): C900010; C900011 | Nota de FAMILIA: se atribuye solo a la relacion R000004; lectura inci
+2 CONC erta no es identidad confirmada.
+1 HUSB @P000002@
+1 WIFE @P000003@
+1 CHIL @P000001@
+1 CHIL @P000004@
+0 @S900001@ SOUR
+1 TITL Registro ficticio
+1 AUTH Archivo ficticio
+1 NOTE Tipo: Acta; Original/derivada: Original; Calidad: Alta; Repositorio: Archivo X; Signatura: Leg 1; URL: n/d
+0 TRLR
