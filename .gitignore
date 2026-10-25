@@ -1,0 +1,14 @@
+# Nunca versionar datos reales
+*.xlsx
+
+*.ged
+*.gramps
+*.csv
+out/
+output/
+inputs/
+private/
+.env
+*.pem
+__pycache__/
+!gramps_privacidad/fixtures/*.ged

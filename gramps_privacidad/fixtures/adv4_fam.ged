@@ -1,0 +1,35 @@
+0 HEAD
+1 SOUR PILOTO
+1 GEDC
+2 VERS 5.5.1
+1 CHAR UTF-8
+0 @P000001@ INDI
+1 NAME Mara /Falso Fam Uno/
+1 SEX F
+1 RESN privacy
+1 FAMS @F1@
+0 @P000002@ INDI
+1 NAME Nico /Falso Fam Dos/
+1 SEX M
+1 FAMS @F1@
+0 @P000003@ INDI
+1 NAME Ola /Falso Fam Tres/
+1 SEX F
+1 FAMS @F2@
+0 @P000004@ INDI
+1 NAME Pau /Falso Fam Cuatro/
+1 SEX M
+1 FAMS @F2@
+0 @F1@ FAM
+1 HUSB @P000002@
+1 WIFE @P000001@
+1 MARR
+2 DATE 3 FEB 1855
+2 PLAC Villa Nupcial, Provincia Falsa, Pais Falso
+0 @F2@ FAM
+1 HUSB @P000004@
+1 WIFE @P000003@
+1 MARR
+2 DATE 3 FEB 1855
+2 PLAC Villa Nupcial, Provincia Falsa, Pais Falso
+0 TRLR
