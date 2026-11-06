@@ -11,6 +11,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -26,5 +27,10 @@ jobs:
         run: python -m pip install "openpyxl==3.1.5"
       - name: Converter and reconciler tests
         run: python -m unittest discover -s tests
+      # End-to-end CLI gates: real entry points and exit codes
+      # (check_evidencia full/--solo-ged, reconcile.py, reconcile_v2.py),
+      # including negative gates that must fail on a tampered GED.
+      - name: End-to-end CLI gates
+        run: python -m unittest discover -s tests -p "test_cli_gates.py"
       - name: Privacy remediation tests (offline; integration tests skip without GRAMPS_TEST_BASE)
         run: python -m unittest discover -s gramps_privacidad/tests -p "test_*.py"
