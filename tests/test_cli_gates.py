@@ -2,7 +2,7 @@
 de comandos (parseo de argumentos y codigos de salida), que los tests por
 modulo no ejercitan. check_evidencia es el gate de privacidad: un GED
 manipulado debe dar salida 1."""
-import os, sys, subprocess, tempfile, unittest
+import os, shutil, sys, subprocess, tempfile, unittest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 from test_v2 import pers, rel, libro, oricsv, H02
@@ -42,6 +42,7 @@ class CliEvidencia(unittest.TestCase):
 
     def setUp(self):
         self.d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.d, ignore_errors=True)
         self.x, self.o, self.ev = gen_v2(self.d)
 
     def test_full_mode_clean_ged_exits_0(self):
@@ -67,6 +68,7 @@ class CliReconcile(unittest.TestCase):
 
     def test_reconcile_clean_fixture_reports_only_known_exclusion(self):
         d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         subprocess.check_call([sys.executable, os.path.join(ROOT, 'make_fixture.py')], cwd=d)
         x = os.path.join(d, 'fixtures', 'fixture_sintetico.xlsx'); o = os.path.join(d, 'o.ged')
         mapper.run(x, o)
@@ -78,6 +80,7 @@ class CliReconcile(unittest.TestCase):
 
     def test_reconcile_tampered_ged_exits_1_with_real_diff(self):
         d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         subprocess.check_call([sys.executable, os.path.join(ROOT, 'make_fixture.py')], cwd=d)
         x = os.path.join(d, 'fixtures', 'fixture_sintetico.xlsx'); o = os.path.join(d, 'o.ged')
         mapper.run(x, o)
@@ -89,6 +92,7 @@ class CliReconcile(unittest.TestCase):
 
     def test_reconcile_v2_clean_exits_0(self):
         d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         x, o, ev = gen_v2(d)
         ori = os.path.join(d, 'ori.csv')
         r = cli(os.path.join(ROOT, 'reconcile_v2.py'), x, o, '-', ori)
