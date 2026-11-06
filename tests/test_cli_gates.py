@@ -76,7 +76,7 @@ class CliReconcile(unittest.TestCase):
         # el fixture produce una unica diferencia conocida (cita excluida por el mapper): salida 1 con solo esa linea
         self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
         lineas = [l for l in r.stdout.splitlines() if l.startswith('   ')]
-        self.assertTrue(lineas and all('cita_no_emitida_o_excluida' in l for l in lineas), r.stdout)
+        self.assertEqual(lineas, ['   cita_no_emitida_o_excluida C000002 persona P000002'], r.stdout)
 
     def test_reconcile_tampered_ged_exits_1_with_real_diff(self):
         d = tempfile.mkdtemp()
