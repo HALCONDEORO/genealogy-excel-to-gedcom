@@ -24,6 +24,7 @@ class Ev(unittest.TestCase):
     """Familia ficticia: padres P2 (Beto), P3 (Cira); hijos P1 (Ana) y P4 (Dani). Cuatro aristas; la incertidumbre se declara en una sola (R000004)."""
     def setUp(self):
         self.d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.d, ignore_errors=True)
         self.x = os.path.join(self.d, 'f.xlsx'); self.o = os.path.join(self.d, 'o.ged'); self.ori = os.path.join(self.d, 'ori.csv'); self.ev = os.path.join(self.d, 'ev.csv')
         self.personas = [pers('P000001', 'Ana', 'Falsa Uno', 'F'), pers('P000002', 'Beto', 'Falso Dos', 'M'), pers('P000003', 'Cira', 'Falsa Tres', 'F'), pers('P000004', 'Dani', 'Falso Cuatro', 'M')]
         self.rels = [rel('R000001', 'P000001', 'Padre biológico', 'P000002'), rel('R000002', 'P000001', 'Madre biológica', 'P000003'),
@@ -149,6 +150,7 @@ class EvAdversarial(unittest.TestCase):
     """Comprobador adversarial: dos familias, filas privadas y no privadas, salvedades, idem. Cada mutacion del GED debe hacer fallar al comprobador."""
     def setUp(self):
         self.d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.d, ignore_errors=True)
         self.x = os.path.join(self.d, 'f.xlsx'); self.o = os.path.join(self.d, 'o.ged'); self.ori = os.path.join(self.d, 'ori.csv'); self.ev = os.path.join(self.d, 'ev.csv')
         P = [pers('P000001', 'Ana', 'Falsa Uno', 'F'), pers('P000002', 'Beto', 'Falso Dos', 'M'), pers('P000003', 'Cira', 'Falsa Tres', 'F'), pers('P000004', 'Dani', 'Falso Cuatro', 'M'),
              pers('P000005', 'Eva', 'Falsa Cinco', 'F'), pers('P000006', 'Fito', 'Falso Seis', 'M'), pers('P000007', 'Gus', 'Falso Siete', 'M', nac='2005-01-01', muerte=None)]

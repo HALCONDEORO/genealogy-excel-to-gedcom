@@ -1,4 +1,4 @@
-import os, sys, tempfile, unittest, io, contextlib
+import os, sys, shutil, tempfile, unittest, io, contextlib
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import mapper, reconcile, openpyxl
 
@@ -6,6 +6,7 @@ import mapper, reconcile, openpyxl
 class R(unittest.TestCase):
     def _run(self, mutate=None):
         d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         import subprocess
         subprocess.check_call([sys.executable, os.path.join(os.path.dirname(__file__), '..', 'make_fixture.py')], cwd=d)
         p = os.path.join(d, 'fixtures', 'fixture_sintetico.xlsx')
