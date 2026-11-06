@@ -1,7 +1,7 @@
 import openpyxl
 import re
 import sys
-import os, sys, tempfile, unittest, subprocess
+import os, shutil, sys, tempfile, unittest, subprocess
 
 
 def _read(path):
@@ -41,6 +41,7 @@ class T(unittest.TestCase):
 
     def test_fixture_runs_and_dedup(self):
         d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         subprocess.check_call([sys.executable, os.path.join(os.path.dirname(mapper.__file__), 'make_fixture.py')], cwd=d)
         s, warn, rep, unsup = mapper.run(os.path.join(d, 'fixtures/fixture_sintetico.xlsx'), os.path.join(d, 'o.ged'))
         self.assertEqual(s['personas'], 3)
@@ -52,6 +53,7 @@ class T(unittest.TestCase):
     def _fixture(self):
         import openpyxl
         d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         subprocess.check_call([sys.executable, os.path.join(os.path.dirname(mapper.__file__), 'make_fixture.py')], cwd=d)
         p = os.path.join(d, 'fixtures/fixture_sintetico.xlsx')
         return d, p, openpyxl.load_workbook(p)

@@ -1,4 +1,4 @@
-import os, sys, tempfile, unittest, io, contextlib, csv, datetime
+import os, sys, shutil, tempfile, unittest, io, contextlib, csv, datetime
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import openpyxl, mapper, mapper_v2, reconcile_v2, v2_selector
 
@@ -53,6 +53,7 @@ def oricsv(path, filas):
 class V2(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.d, ignore_errors=True)
         self.x = os.path.join(self.d, 'f.xlsx'); self.o = os.path.join(self.d, 'o.ged')
         self.personas = [pers('P000001', 'Ana', 'Falsa Uno', 'F'), pers('P000002', 'Beto', 'Falso Dos', 'M'), pers('P000003', 'Cira', 'Falsa Tres', 'F'),
                          pers('P000004', 'Dani', 'Falso Cuatro', 'M', est='Probable'), pers('P000005', 'Eva', 'Falsa Cinco', 'F', nac='1790', prec='Aproximada'),
