@@ -3,6 +3,8 @@ Gramps convierte las rutas FILE de un GEDCOM en absolutas al importar; Gramps We
 Uso: python3 gramps_relativize.py entrada.gramps carpeta_base salida.gramps
 Fail closed: si alguna ruta queda fuera de la carpeta base, no escribe nada. No toca nada mas del XML."""
 import sys, os, re, gzip, tempfile
+import xml.etree.ElementTree as ET
+from xml.sax.saxutils import escape
 
 
 class RelError(Exception):
@@ -16,13 +18,29 @@ def relativize(inp, base, out):
     with gzip.open(inp, 'rb') as fh:
         xml = fh.read().decode('utf-8')
     n = [0]
+    # Parse attribute values before checking paths: XML character references may
+    # otherwise hide an absolute path or traversal from the filesystem checks.
+    try:
+        root = ET.fromstring(xml)
+    except ET.ParseError as ex:
+        raise RelError('XML no valido') from ex
+    if '<!ENTITY' in xml:
+        raise RelError('declaraciones de entidad no admitidas')
+    files = [e for e in root.iter() if e.tag.rsplit('}', 1)[-1] == 'file']
+    if any('src' not in e.attrib for e in files):
+        raise RelError('archivo sin atributo src')
+    paths = iter(e.attrib['src'] for e in files)
+    expected_paths = []
 
     def inside(p):
         rp = os.path.realpath(p)
         return rp == base or (rp + '/').startswith(base + '/')
 
     def fix(m):
-        src = m.group(2)
+        try:
+            src = next(paths)
+        except StopIteration as ex:
+            raise RelError('estructura de archivos no admitida') from ex
         if not src:
             raise RelError('ruta de archivo vacia')
         if re.match(r'^[A-Za-z]:', src) or '\\' in src or src.startswith('//'):
@@ -32,9 +50,27 @@ def relativize(inp, base, out):
         # contencion logica (tras normalizar, sin '..') Y real (symlinks intermedios que salgan de la carpeta)
         if rel == '.' or rel.startswith('..') or not inside(full):
             raise RelError(f'ruta fuera de la carpeta base: {src}')
+        expected_paths.append(rel)
         n[0] += 1
-        return m.group(1) + rel + m.group(3)
-    new = re.sub(r'(<file src=")([^"]*)(")', fix, xml)
+        return m.group(1) + escape(rel, {'"': '&quot;', "'": '&apos;'}) + m.group(2)
+    # Match complete file start tags, regardless of src order or quote style.
+    tag = r'<file\b(?:[^\"\'<>]|\"[^\"]*\"|\'[^\']*\')*>'
+    attr = re.compile(r'''(\bsrc\s*=\s*(["']))(.*?)\2''', re.S)
+    def file_tag(m):
+        value, count = attr.subn(fix, m.group(0), count=1)
+        if count != 1:
+            raise RelError('archivo sin atributo src reconocido')
+        return value
+    new = re.sub(tag, file_tag, xml)
+    if n[0] != len(files):
+        raise RelError('estructura de archivos no admitida')
+    try:
+        actual = [e.attrib.get('src') for e in ET.fromstring(new).iter()
+                  if e.tag.rsplit('}', 1)[-1] == 'file']
+    except ET.ParseError as ex:
+        raise RelError('reescritura XML no valida') from ex
+    if actual != expected_paths:
+        raise RelError('atributos de archivo ambiguos')
     d = os.path.dirname(os.path.abspath(out))
     fd, tmp = tempfile.mkstemp(prefix='.rel-', suffix='.tmp', dir=d)
     try:

@@ -80,5 +80,52 @@ class T(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(d, 'out.gramps')), src)
 
 
+
+    def test_xml_decoded_outside_paths_preserve_existing_output(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = os.path.join(d, 'base'); os.mkdir(base)
+            inp = os.path.join(d, 'in.gramps'); out = os.path.join(d, 'out.gramps')
+            for src in ('&#47;etc/passwd', '&#x2f;etc/passwd', '&#46;&#46;/outside', 'C:&#47;secret', 'media&#92;secret'):
+                with self.subTest(src=src):
+                    _write(inp, '<d><file src="%s"/></d>' % src)
+                    with open(out, 'wb') as f: f.write(b'previous')
+                    with self.assertRaises(g.RelError): g.relativize(inp, base, out)
+                    with open(out, 'rb') as f: self.assertEqual(f.read(), b'previous')
+                    self.assertFalse(any(x.startswith('.rel-') for x in os.listdir(d)))
+
+    def test_xml_attribute_order_quotes_and_escaped_names(self):
+        import xml.etree.ElementTree as ET
+        with tempfile.TemporaryDirectory() as d:
+            base = os.path.join(d, 'base'); os.mkdir(base)
+            inp = os.path.join(d, 'in.gramps'); out = os.path.join(d, 'out.gramps')
+            _write(inp, "<d><file mime='x' src='%s/media/a&amp;b&apos;c.pdf'/></d>" % base)
+            self.assertEqual(g.relativize(inp, base, out), 1)
+            self.assertEqual(ET.fromstring(_read(out)).find('file').get('src'), "media/a&b'c.pdf")
+
+    def test_literal_opposite_quote_in_attribute(self):
+        import xml.etree.ElementTree as ET
+        with tempfile.TemporaryDirectory() as d:
+            base = os.path.join(d, 'base'); os.mkdir(base)
+            inp = os.path.join(d, 'in.gramps'); out = os.path.join(d, 'out.gramps')
+            for delim, name in ((chr(34), "a'b.pdf"), (chr(39), 'a"b.pdf')):
+                with self.subTest(name=name):
+                    xml = '<d><file src=' + delim + base + '/media/' + name + delim + '/></d>'
+                    _write(inp, xml)
+                    self.assertEqual(g.relativize(inp, base, out), 1)
+                    self.assertEqual(ET.fromstring(_read(out)).find('file').get('src'), 'media/' + name)
+
+    def test_unsupported_xml_never_silently_passes(self):
+        with tempfile.TemporaryDirectory() as d:
+            base = os.path.join(d, 'base'); os.mkdir(base)
+            inp = os.path.join(d, 'in.gramps'); out = os.path.join(d, 'out.gramps')
+            for xml in ('<d><file src="x"></d>', '<d><file mime="x"/></d>',
+                        '<!DOCTYPE d [<!ENTITY p "../outside">]><d><file src="&p;"/></d>',
+                        '<d><file data-src="untouched" src="../outside"/></d>'):
+                with self.subTest(xml=xml):
+                    _write(inp, xml)
+                    with self.assertRaises(g.RelError): g.relativize(inp, base, out)
+                    self.assertFalse(os.path.exists(out))
+
+
 if __name__ == '__main__':
     unittest.main()
